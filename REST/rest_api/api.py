@@ -13,6 +13,7 @@ from rest_framework import status
 
 from rest_framework import generics
 from rest_framework import mixins
+from rest_framework import viewsets
 
 class ProteinFamilyDetail(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
@@ -22,6 +23,7 @@ class ProteinFamilyDetail(mixins.CreateModelMixin,
 
   queryset = ProteinFamily.objects.all()
   serializer_class = ProteinFamilySerializer
+  
 
   def post(self, request, *args, **kwargs):
     return self.create(request, *args, **kwargs)
@@ -32,15 +34,17 @@ class ProteinFamilyDetail(mixins.CreateModelMixin,
   def delete(self, request, *args, **kwargs):
     return self.destroy(request, *args, **kwargs)
 
-class ProteinDomainsDetail(mixins.CreateModelMixin,
+class ProteinDetail(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
                   mixins.DestroyModelMixin,
                   generics.GenericAPIView):
 
-  queryset = Taxonomy.objects.all()
-  serializer_class = ProteinDomainsSerializer
-
+  # lookup_field = 'protein_id'
+  queryset = Protein.objects.all()
+  serializer_class = ProteinSerializer
+  
+  
   def post(self, request, *args, **kwargs):
     return self.create(request, *args, **kwargs)
   def get(self, request, *args, **kwargs):
@@ -49,3 +53,42 @@ class ProteinDomainsDetail(mixins.CreateModelMixin,
       return self.update(request, *args, **kwargs)
   def delete(self, request, *args, **kwargs):
     return self.destroy(request, *args, **kwargs)
+
+class ProteinList(
+  # mixins.CreateModelMixin,
+  #                 mixins.RetrieveModelMixin,
+  #                 mixins.UpdateModelMixin,
+  #                 mixins.DestroyModelMixin,
+  #                 generics.GenericAPIView):
+                   generics.ListAPIView):
+
+  lookup_field = 'taxonomy'
+  queryset = Domains.objects.all()
+  serializer_class = ProteinListSerializer 
+
+  def get_queryset(self):
+      """
+      This view should return a list of all the purchases
+      for the currently authenticated user.
+      """
+      taxonomy = self.kwargs['taxonomy']
+      return Domains.objects.filter(taxonomy__exact=taxonomy)
+  
+  # def get(self, request, *args, **kwargs):
+  #     return self.retrieve(request, *args, **kwargs)
+
+#https://docs.djangoproject.com/en/dev/topics/db/queries/
+
+class DomainsList(generics.ListAPIView):
+  lookup_field = 'taxonomy'
+  queryset = Domains.objects.all()
+  serializer_class = DomainsListSerializer   
+
+  def get_queryset(self):
+      """
+      This view should return a list of all the purchases
+      for the currently authenticated user.
+      """
+      taxonomy = self.kwargs['taxonomy']
+      return Domains.objects.filter(taxonomy__exact=taxonomy)
+  
