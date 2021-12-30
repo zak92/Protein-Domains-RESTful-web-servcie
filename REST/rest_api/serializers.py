@@ -47,7 +47,7 @@ class ProteinSerializer(serializers.ModelSerializer):
   class Meta:
     model = Protein
     # fields that can be served and retrieved by the user
-    fields = ['protein_id', 'taxonomy', 'length', 'domains']
+    fields = ['protein_id', 'sequence', 'taxonomy', 'length', 'domains']
     lookup_field = 'protein_id'
     def create(self, validated_data):
       taxonomy_data = self.initial_data.get('taxonomy'),

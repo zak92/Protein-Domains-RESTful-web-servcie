@@ -92,3 +92,6 @@ class DomainsList(generics.ListAPIView):
       taxonomy = self.kwargs['taxonomy']
       return Domains.objects.filter(taxonomy__exact=taxonomy)
   
+
+
+  

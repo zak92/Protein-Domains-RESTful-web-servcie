@@ -44,9 +44,9 @@ class Protein(models.Model):
   protein_id = models.CharField(max_length=256, null=False, blank=False) # removed primarykey=true
   taxonomy = models.ForeignKey(Taxonomy, on_delete=models.DO_NOTHING)
   length = models.IntegerField(null=False, blank=False)
-  domains = models.ForeignKey(Domains, on_delete=models.DO_NOTHING)
+  domains = models.ForeignKey(Domains, on_delete=models.DO_NOTHING, related_name='domain')
   # protein_family = models.ForeignKey(ProteinFamily, on_delete=models.DO_NOTHING)
-  # sequence =  models.ForeignKey(Sequence, on_delete=models.DO_NOTHING, blank=True, null=True)
+  sequence =  models.CharField(max_length=400000, null=False, blank=False)
 
  
   #fk_protein_family = models.ForeignKey(ProteinFamily, on_delete=models.DO_NOTHING)
