@@ -10,7 +10,7 @@ class TaxonomyAdmin(admin.ModelAdmin):
  list_display = ('taxa_id', 'clade', 'genus', 'species')
 
 class ProteinAdmin(admin.ModelAdmin):
- list_display = ('protein_id', 'length')
+ list_display = ('id','protein_id', 'taxonomy', 'length', 'domains')
 
 # class SequenceAdmin(admin.ModelAdmin):
 #  list_display = ('id', 'sequence')

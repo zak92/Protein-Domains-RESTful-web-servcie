@@ -40,7 +40,7 @@ class ProteinDetail(mixins.CreateModelMixin,
                   mixins.DestroyModelMixin,
                   generics.GenericAPIView):
 
-  # lookup_field = 'protein_id'
+  lookup_field = 'protein_id'
   queryset = Protein.objects.all()
   serializer_class = ProteinSerializer
   
@@ -72,7 +72,7 @@ class ProteinList(
       for the currently authenticated user.
       """
       taxonomy = self.kwargs['taxonomy']
-      return Domains.objects.filter(taxonomy__exact=taxonomy)
+      return Protein.objects.filter(taxonomy__exact=taxonomy)
   
   # def get(self, request, *args, **kwargs):
   #     return self.retrieve(request, *args, **kwargs)

@@ -22,32 +22,6 @@ class DomainsSerializer(serializers.ModelSerializer):
     fields = ['id', 'description', 'start', 'stop'] 
   
 
-
-
-class ProteinSerializer(serializers.ModelSerializer):
-  
-  taxonomy = TaxonomySerializer()
-  # domains = DomainsSerializer()
-
-  class Meta:
-    model = Protein
-    # fields that can be served and retrieved by the user
-    fields = ['protein_id', 'taxonomy', 'length']
-    # lookup_field = 'protein_id'
-    def create(self, validated_data):
-      taxonomy_data = self.initial_data.get('taxonomy'),
-      # domains_data = self.initial_data.get('domains')
-      #protein_family_data = self.initial_data.get('protein_family')
-      
-      protein_details = Protein(**{**validated_data,
-                  'taxonomy': Taxonomy.objects.get(pk=taxonomy_data['id']),
-                  # 'domains': Domains.objects.get(pk=domains_data['id'])
-                  #'protein_family': ProteinFamily.objects.get(pk=protein_family_data['domain_id']),
-                  })
-      protein_details.save()
-      return protein_details
-
-
 class DomainsListSerializer(serializers.ModelSerializer):
   
   pfam_id = ProteinFamilySerializer()
@@ -57,16 +31,50 @@ class DomainsListSerializer(serializers.ModelSerializer):
     # fields that can be served and retrieved by the user
     fields = ['id', 'pfam_id']
 
+class ProteinDomainsListSerializer(serializers.ModelSerializer):
+  pfam_id = ProteinFamilySerializer()
+  class Meta:
+    model = Domains
+    # fields that can be served and retrieved by the user
+    fields = ['pfam_id', 'description', 'start', 'stop']
+
+class ProteinSerializer(serializers.ModelSerializer):
+  
+  taxonomy = TaxonomySerializer()
+  domains = ProteinDomainsListSerializer()
+  
+
+  class Meta:
+    model = Protein
+    # fields that can be served and retrieved by the user
+    fields = ['protein_id', 'taxonomy', 'length', 'domains']
+    lookup_field = 'protein_id'
+    def create(self, validated_data):
+      taxonomy_data = self.initial_data.get('taxonomy'),
+      domains_data = self.initial_data.get('domains')
+      #protein_family_data = self.initial_data.get('protein_family')
+      
+      protein_details = Protein(**{**validated_data,
+                  'taxonomy': Taxonomy.objects.get(pk=taxonomy_data['id']),
+                   'domains': Domains.objects.get(pk=domains_data['id'])
+                  #'protein_family': ProteinFamily.objects.get(pk=protein_family_data['domain_id']),
+                  })
+      protein_details.save()
+      return protein_details
+
+
+
+
 
 
 class ProteinListSerializer(serializers.ModelSerializer):
   
-  protein = ProteinSerializer()
+  # protein = ProteinSerializer()
 
   class Meta:
-    model = Domains
+    model = Protein
     # fields that can be served and retrieved by the user
-    fields = ['id', 'protein']
+    fields = ['id', 'protein_id']
     # def get_queryset(self):
     #   """
     #   This view should return a list of all the purchases

@@ -46,8 +46,8 @@ with open(data_file_2) as csv_file_2:
     genus = scientific_name[0]
     species = scientific_name[1]
     taxonomy.add((row[1], row[2], genus, species))  
-    domains.add((row[4], row[6], row[7], row[0], row[1], row[5]))
-    protein[row[0]] = row[1:2] + row[8:9] 
+    domains.add((row[4], row[6], row[7], row[1], row[5]))
+    protein[row[0]] = row[1:2] + row[8:9] + row[4:8]    
     
 
    
@@ -90,17 +90,21 @@ for entry in taxonomy:
 #   row.save()
 #   taxonomy_rows[entry[0]] = row
 
-protein_rows = {}
-for protein_id, data in protein.items():
-  row = Protein.objects.create(protein_id=protein_id, taxonomy=taxonomy_rows[data[0]], length=data[1])
-  row.save()
-  protein_rows[protein_id] = row
-
-#print(protein)
 domain_rows = {}
 for entry in domains:
-  row = Domains.objects.create(description=entry[0], start=entry[1], stop=entry[2], protein=protein_rows[entry[3]], taxonomy=taxonomy_rows[entry[4]], pfam_id=protein_family_rows[entry[5]])
+  row = Domains.objects.create(description=entry[0], start=entry[1], stop=entry[2], taxonomy=taxonomy_rows[entry[3]], pfam_id=protein_family_rows[entry[4]])
   row.save()
   domain_rows[entry[0]] = row
 
-print(domains)
+  
+protein_rows = {}
+for protein_id, data in protein.items():
+  row = Protein.objects.create(protein_id=protein_id, taxonomy=taxonomy_rows[data[0]], length=data[1], domains=domain_rows[data[2]])
+  row.save()
+  protein_rows[protein_id] = row
+
+for protein_id, data in protein.items():
+  print(protein_id, data)
+
+
+
