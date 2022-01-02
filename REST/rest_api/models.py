@@ -23,30 +23,14 @@ class ProteinFamily(models.Model):
   def __str__(self):
     return self.domain_id
 
- 
-
-class Domains(models.Model):
-  pfam_id = models.ForeignKey(ProteinFamily, on_delete=models.DO_NOTHING)
-  taxonomy = models.ForeignKey(Taxonomy, on_delete=models.DO_NOTHING)
-  # protein = models.ForeignKey(Protein, on_delete=models.DO_NOTHING)
-  description = models.CharField(max_length=500, null=False, blank=False)
-  start = models.IntegerField(null=False, blank=False)
-  stop = models.IntegerField(null=False, blank=False)
-
-  def __str__(self):
-    return self.protein
-  def __str__(self):
-    return self.description
-  def __str__(self):
-    return str(self.pfam_id)
-  
 class Protein(models.Model):
   protein_id = models.CharField(max_length=256, null=False, blank=False) # removed primarykey=true
   taxonomy = models.ForeignKey(Taxonomy, on_delete=models.DO_NOTHING)
   length = models.IntegerField(null=False, blank=False)
-  domains = models.ForeignKey(Domains, on_delete=models.DO_NOTHING, related_name='domain')
-  # protein_family = models.ForeignKey(ProteinFamily, on_delete=models.DO_NOTHING)
+  # domains = models.ForeignKey(Domains, on_delete=models.DO_NOTHING, related_name='domain')
   sequence =  models.CharField(max_length=400000, null=False, blank=False)
+  # domains = models.ManyToManyField(Domains, related_name='domains', through='ProteinDomainLink')
+
 
  
   #fk_protein_family = models.ForeignKey(ProteinFamily, on_delete=models.DO_NOTHING)
@@ -56,4 +40,25 @@ class Protein(models.Model):
     return self.protein_id
 
 
+class Domains(models.Model):
+  pfam_id = models.ForeignKey(ProteinFamily, on_delete=models.DO_NOTHING)
+  taxonomy = models.ForeignKey(Taxonomy, on_delete=models.DO_NOTHING)
+  # protein = models.ForeignKey(Protein, on_delete=models.DO_NOTHING)
+  description = models.CharField(max_length=500, null=False, blank=False)
+  start = models.IntegerField(null=False, blank=False)
+  stop = models.IntegerField(null=False, blank=False)
+  protein = models.ManyToManyField(Protein, related_name='domains') #through='ProteinDomainLink'
+
+  def __str__(self):
+    return self.protein
+  def __str__(self):
+    return self.description
+  def __str__(self):
+    return str(self.pfam_id)
+  
+
+
+# class ProteinDomainLink(models.Model):
+#   protein =  models.ForeignKey(Protein, on_delete=models.DO_NOTHING)
+#   domains = models.ForeignKey(Domains, on_delete=models.DO_NOTHING)
 #https://www.sankalpjonna.com/learn-django/representing-foreign-key-values-in-django-serializers

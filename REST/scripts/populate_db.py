@@ -183,7 +183,7 @@ merge_file_2_and_3 ='data/merge_file_2_and_3.csv'
 taxonomy = set()
 domains = set()
 protein =  defaultdict(list)
-
+#domains = defaultdict(dict)
 
 with open(merge_file_2_and_3) as csv_file_2:
   csv_reader_2 = csv.reader(csv_file_2, delimiter=',')
@@ -193,15 +193,16 @@ with open(merge_file_2_and_3) as csv_file_2:
     genus = scientific_name[0]
     species = scientific_name[1]
     taxonomy.add((row[1], row[2], genus, species))  
-    domains.add((row[4], row[6], row[7], row[1], row[5]))
-    protein[row[0]] = row[9:10] + row[1:2] + row[8:9] + row[4:8] 
+    domains.add((row[4], row[6], row[7], row[1], row[5], row[0]))
+    #domains
+    protein[row[0]] = row[9:10] + row[1:2] + row[8:9] #+ row[4:8] 
     
   
    
  
 
 
-
+print(len(domains))
 
 
 
@@ -212,6 +213,7 @@ ProteinFamily.objects.all().delete()
 Taxonomy.objects.all().delete()
 Protein.objects.all().delete()
 Domains.objects.all().delete()
+# ProteinDomainLink.objects.all().delete()
 
 protein_family_rows = {}
 for pfam in protein_family:
@@ -219,11 +221,7 @@ for pfam in protein_family:
   row.save()
   protein_family_rows[pfam[0]] = row
 
-# sequence_rows = {}
-# for entry in sequence:
-#   row = Sequence.objects.create(sequence=entry)
-#   row.save()
-#   sequence_rows[entry] = row
+
 
 taxonomy_rows = {}
 for entry in taxonomy:
@@ -236,22 +234,28 @@ for entry in taxonomy:
 #   row = Taxonomy.objects.create(taxa_id=taxa_id, clade=entry[1], genus=entry[2], species=entry[3])
 #   row.save()
 #   taxonomy_rows[entry[0]] = row
+protein_rows = {}
+for protein_id, data in protein.items():
+  row = Protein.objects.create(protein_id=protein_id, sequence=data[0], taxonomy=taxonomy_rows[data[1]], length=data[2] )#domains=domain_rows[data[3]],
+  #row.domains.add(domain_rows[data[3]])
+  row.save()
+  protein_rows[protein_id] = row
 
 domain_rows = {}
 for entry in domains:
-  row = Domains.objects.create(description=entry[0], start=entry[1], stop=entry[2], taxonomy=taxonomy_rows[entry[3]], pfam_id=protein_family_rows[entry[4]])
+  row = Domains.objects.create(description=entry[0], start=entry[1], stop=entry[2], 
+                              taxonomy=taxonomy_rows[entry[3]], 
+                              pfam_id=protein_family_rows[entry[4]])
+  row.protein.add(protein_rows[entry[5]])
   row.save()
   domain_rows[entry[0]] = row
 
   
-protein_rows = {}
-for protein_id, data in protein.items():
-  row = Protein.objects.create(protein_id=protein_id, sequence=data[0], taxonomy=taxonomy_rows[data[1]], length=data[2], domains=domain_rows[data[3]], )
-  row.save()
-  protein_rows[protein_id] = row
+
 
 # for protein_id, data in protein.items():
 #   print(protein_id, data)
 
 
-
+# print(protein[ "A0A016S8J7"])
+# print(protein)

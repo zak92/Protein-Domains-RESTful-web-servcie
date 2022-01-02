@@ -15,6 +15,8 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
 
+from django.db.models import Avg, Count, Min, Sum
+
 class ProteinFamilyDetail(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
@@ -91,7 +93,36 @@ class DomainsList(generics.ListAPIView):
       """
       taxonomy = self.kwargs['taxonomy']
       return Domains.objects.filter(taxonomy__exact=taxonomy)
+
+
+from django.db.models import Avg, Count, Min, Sum
+from rest_framework.response import Response
+class ProteinCoverage(mixins.CreateModelMixin,
+                  mixins.RetrieveModelMixin,
+                  mixins.UpdateModelMixin,
+                  mixins.DestroyModelMixin,
+                  generics.GenericAPIView):
+  lookup_field = 'protein_id'
+  queryset = Protein.objects.all()
+  serializer_class = ProteinCoverageSerializer  
+  # serializer_class = CoverageSerializer 
+  # pubs = Protein.objects.annotate(start=Count('start'))
+  # print(pubs)
+  print(serializer_class[0])
+  def get(self, request, *args, **kwargs):
+    # print("gdugwudg")
+    return self.retrieve(request, *args, **kwargs)
+
+
+  #Protein.objects.annotate(Count('length'))
+  # def get_queryset(self):
+        
+  #       return Protein.objects.annotate(
+  #           Count('domains'),
+            
+  #       )
+ 
+# https://stackoverflow.com/questions/31920853/aggregate-and-other-annotated-fields-in-django-rest-framework-serializers
   
-
-
+# https://stackoverflow.com/questions/43594195/django-sum-up-counts-in-one-query
   

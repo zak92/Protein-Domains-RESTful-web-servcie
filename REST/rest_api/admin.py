@@ -10,7 +10,8 @@ class TaxonomyAdmin(admin.ModelAdmin):
  list_display = ('taxa_id', 'clade', 'genus', 'species')
 
 class ProteinAdmin(admin.ModelAdmin):
- list_display = ('id','protein_id', 'taxonomy', 'length', 'domains')
+ list_display = ('protein_id', 'sequence', 'taxonomy', 'length')
+
 
 # class SequenceAdmin(admin.ModelAdmin):
 #  list_display = ('id', 'sequence')
@@ -18,4 +19,6 @@ class ProteinAdmin(admin.ModelAdmin):
 admin.site.register(ProteinFamily, ProteinFamilyAdmin)
 admin.site.register(Taxonomy, TaxonomyAdmin)
 admin.site.register(Protein, ProteinAdmin)
+admin.site.register(Domains)
+
 # admin.site.register(Sequence, SequenceAdmin)
