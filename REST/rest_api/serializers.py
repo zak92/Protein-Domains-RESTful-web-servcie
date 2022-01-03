@@ -2,6 +2,7 @@ from django.db.models import lookups
 from rest_framework import serializers
 from .models import *
 from rest_framework import parsers
+from drf_writable_nested import WritableNestedModelSerializer
 
 class ProteinFamilySerializer(serializers.ModelSerializer):
   class Meta:
@@ -31,18 +32,32 @@ class DomainsListSerializer(serializers.ModelSerializer):
     # fields that can be served and retrieved by the user
     fields = ['id', 'pfam_id']
 
+
+# class ProteinDomainLinkSerializer(serializers.HyperlinkedModelSerializer):  
+
+#     class Meta:
+#         model = ProteinDomainLink
+#         fields = ['protein', 'domains']
+#         read_only_fields = ['protein', 'domains']
+
+
 class ProteinDomainsListSerializer(serializers.ModelSerializer):
   pfam_id = ProteinFamilySerializer()
+
   class Meta:
     model = Domains
     # fields that can be served and retrieved by the user
     fields = ['pfam_id', 'description', 'start', 'stop']
 
+ 
+
+
+
 class ProteinSerializer(serializers.ModelSerializer):
   
   taxonomy = TaxonomySerializer()
   domains = ProteinDomainsListSerializer(many=True)
-  # domains = DomainsSerializer()
+
 
   class Meta:
     model = Protein
@@ -82,19 +97,19 @@ from django.db.models import F
 
 
 from django.db.models import Avg, Count, Min, Sum
-class DomainsCoverageSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Domains
-    #c = Domains.objects.annotate(start=Count('start'))
-    # fields that can be served and retrieved by the user
-    fields = ['start', 'stop']  # remove protein
+# class DomainsCoverageSerializer(serializers.ModelSerializer):
+#   class Meta:
+#     model = Domains
+#     #c = Domains.objects.annotate(start=Count('start'))
+#     # fields that can be served and retrieved by the user
+#     fields = ['start', 'stop']  # remove protein
     
 
 from rest_framework.renderers import JSONRenderer
 
 class ProteinCoverageSerializer(serializers.ModelSerializer):
   
-  #domains = DomainsCoverageSerializer(many=True)
+  
   
 
   coverage = serializers.SerializerMethodField('_get_coverage')
@@ -134,44 +149,38 @@ class ProteinCoverageSerializer(serializers.ModelSerializer):
     
     return protein_details
 
-
-
-
-
-# class ProteinCoverageSerializer(serializers.ModelSerializer):
-  
-  
-
+# class PSerializer(serializers.ModelSerializer):
+#   pfam_id = ProteinFamilySerializer()
  
 #   class Meta:
-#     model = Protein
-#     # fields that can be served and retrieved by the user
-#     fields = [ 'length']
-   
-#     lookup_field = 'protein_id'
-#     def create(self, validated_data):
-#       domains_data = self.initial_data.get('domains')
-#       #protein_family_data = self.initial_data.get('protein_family')
-      
-#       protein_details = Protein(**{**validated_data,
-                  
-#                    'domains': Domains.objects.get(pk=domains_data['id'])
-#                   })
-#       protein_details.save()
-      
-#       return protein_details
-
-
-# class DomainsCoverageSerializer(serializers.ModelSerializer):
-#   protein_length = ProteinCoverageSerializer()
-#   class Meta:
 #     model = Domains
-#     #c = Domains.objects.annotate(start=Count('start'))
 #     # fields that can be served and retrieved by the user
-#     fields = ['start', 'stop', 'protein', 'protein_length'] 
+#     fields = ['pfam_id', 'description', 'start', 'stop']
+
+#   def create(self, validated_data):
+#       protein = Protein.objects.get(pk=id)
+#       instance = Domains.objects.create(**validated_data)
+#       ProteinDomainLink.objects.create(protein=protein, domains=instance)
+#       return instance
+
+#   def to_representation(self, instance):
+#       representation = super(ProteinDomainsListSerializer, self).to_representation(instance)
+#       representation['proteindomainlink'] = ProteinDomainLinkSerializer(instance.proteindomainlink_set.all(), many=True).data
+#       return representation 
 
 
+class AddNewProteinSerializer(WritableNestedModelSerializer, serializers.ModelSerializer): 
+  taxonomy = TaxonomySerializer()
+  domains =  ProteinDomainsListSerializer(many=True)
+  class Meta:
+    model = Protein
+    # fields that can be served and retrieved by the user
+    fields = ['protein_id', 'sequence', 'taxonomy', 'length', 'domains']
+    #fields = '__all__
+   
 
 
+#  https://lynxbee.com/understanding-many-to-many-relationship-and-implementing-it-using-models-manytomanyfield-in-django-drf/
+#  https://stackoverflow.com/questions/49633926/how-to-post-model-with-many-to-many-through-in-django-rest/49738300
 
-  # https://stackoverflow.com/questions/52473960/how-to-get-aggregation-in-django-rest-framework-inside-same-api
+  

@@ -99,6 +99,8 @@ class DomainsList(generics.ListAPIView):
 
 from django.db.models import Avg, Count, Min, Sum
 from rest_framework.response import Response
+
+
 class ProteinCoverage(#generics.ListAPIView):
   mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
@@ -130,3 +132,26 @@ class ProteinCoverage(#generics.ListAPIView):
   
 # https://stackoverflow.com/questions/43594195/django-sum-up-counts-in-one-query
 
+class AddNewProtein(
+  mixins.CreateModelMixin,
+                  mixins.RetrieveModelMixin,
+                  mixins.UpdateModelMixin,
+                  mixins.DestroyModelMixin,
+                  generics.GenericAPIView):
+  
+  queryset = Protein.objects.all()  # Protein
+  
+  serializer_class = AddNewProteinSerializer  
+  # serializer_class = ProteinDomainLinkSerializer
+
+
+  def post(self, request, *args, **kwargs):
+    return self.create(request, *args, **kwargs)
+
+  # def get(self, request, *args, **kwargs):
+  #   return self.retrieve(request, *args, **kwargs)
+
+  def put(self, request, *args, **kwargs):
+      return self.update(request, *args, **kwargs)
+  def delete(self, request, *args, **kwargs):
+    return self.destroy(request, *args, **kwargs)
