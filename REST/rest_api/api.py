@@ -16,6 +16,7 @@ from rest_framework import mixins
 from rest_framework import viewsets
 
 from django.db.models import Avg, Count, Min, Sum
+from django.db.models import Count, F, Value
 
 class ProteinFamilyDetail(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
@@ -74,6 +75,7 @@ class ProteinList(
       for the currently authenticated user.
       """
       taxonomy = self.kwargs['taxonomy']
+      print( Protein.objects.filter(taxonomy__exact=taxonomy))
       return Protein.objects.filter(taxonomy__exact=taxonomy)
   
   # def get(self, request, *args, **kwargs):
@@ -97,32 +99,34 @@ class DomainsList(generics.ListAPIView):
 
 from django.db.models import Avg, Count, Min, Sum
 from rest_framework.response import Response
-class ProteinCoverage(mixins.CreateModelMixin,
+class ProteinCoverage(#generics.ListAPIView):
+  mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
                   mixins.DestroyModelMixin,
                   generics.GenericAPIView):
   lookup_field = 'protein_id'
   queryset = Protein.objects.all()
+  
   serializer_class = ProteinCoverageSerializer  
-  # serializer_class = CoverageSerializer 
-  # pubs = Protein.objects.annotate(start=Count('start'))
-  # print(pubs)
-  print(serializer_class[0])
+
+
+  # def get_queryset(self):
+     
+  #       protein = self.kwargs['protein_id']
+  #       #print(protein)
+  #       x = Protein.objects.filter(protein_id__exact=protein)
+      
+  #       return x
+
+ 
   def get(self, request, *args, **kwargs):
-    # print("gdugwudg")
     return self.retrieve(request, *args, **kwargs)
 
 
-  #Protein.objects.annotate(Count('length'))
-  # def get_queryset(self):
-        
-  #       return Protein.objects.annotate(
-  #           Count('domains'),
-            
-  #       )
+
  
 # https://stackoverflow.com/questions/31920853/aggregate-and-other-annotated-fields-in-django-rest-framework-serializers
   
 # https://stackoverflow.com/questions/43594195/django-sum-up-counts-in-one-query
-  
+
