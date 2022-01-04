@@ -13,7 +13,7 @@ from ..serializers import *
 # https://docs.djangoproject.com/en/3.1/topics/testing/overview/
 
 
-class ProteinTest(APITestCase):
+class ProteinDetailTest(APITestCase):
   protein1 = None
   good_url = ''
   bad_url = ''

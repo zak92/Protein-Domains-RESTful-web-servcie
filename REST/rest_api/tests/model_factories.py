@@ -20,8 +20,8 @@ class TaxonomyFactory(factory.django.DjangoModelFactory):
     model = Taxonomy
 
 class ProteinFamilyFactory(factory.django.DjangoModelFactory):
-  domain_id = 'PF01650'
-  domain_description = 'PeptidaseC13family'
+  domain_id = 'PF00360'
+  domain_description = 'Phytochromeregion'
   class Meta:
     model = ProteinFamily
 

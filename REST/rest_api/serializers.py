@@ -33,13 +33,6 @@ class DomainsListSerializer(serializers.ModelSerializer):
     fields = ['id', 'pfam_id']
 
 
-# class ProteinDomainLinkSerializer(serializers.HyperlinkedModelSerializer):  
-
-#     class Meta:
-#         model = ProteinDomainLink
-#         fields = ['protein', 'domains']
-#         read_only_fields = ['protein', 'domains']
-
 
 class ProteinDomainsListSerializer(serializers.ModelSerializer):
   pfam_id = ProteinFamilySerializer()
