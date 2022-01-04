@@ -75,7 +75,7 @@ class ProteinList(
       for the currently authenticated user.
       """
       taxonomy = self.kwargs['taxonomy']
-      print( Protein.objects.filter(taxonomy__exact=taxonomy))
+    
       return Protein.objects.filter(taxonomy__exact=taxonomy)
   
   # def get(self, request, *args, **kwargs):

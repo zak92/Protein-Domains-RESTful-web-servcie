@@ -102,3 +102,9 @@ class ProteinSerializerTest(APITestCase):
                                         'species': 'ceylanicum'})
     self.assertEqual(data['length'], 101)  # domains ????????????????????
     
+
+
+
+    # post method = https://www.youtube.com/watch?v=0EmvB9fvmsA
+
+    # lists - https://medium.com/@stevelukis/using-listapiview-unit-test-in-django-rest-framework-5af231ce246
