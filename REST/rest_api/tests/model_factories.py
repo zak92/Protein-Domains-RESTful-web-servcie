@@ -19,11 +19,25 @@ class TaxonomyFactory(factory.django.DjangoModelFactory):
   class Meta:
     model = Taxonomy
 
+
+
+
 class ProteinFamilyFactory(factory.django.DjangoModelFactory):
   domain_id = 'PF00360'
   domain_description = 'Phytochromeregion'
   class Meta:
     model = ProteinFamily
+
+class DomainsFactory(factory.django.DjangoModelFactory):
+  pfam_id = factory.SubFactory(ProteinFamilyFactory) 
+  taxonomy = factory.SubFactory(TaxonomyFactory) 
+  description = "abc"
+  start = 1
+  stop = 2
+  class Meta:
+    model = Domains
+
+
 
 
 class ProteinFactory(factory.django.DjangoModelFactory):
@@ -33,6 +47,19 @@ class ProteinFactory(factory.django.DjangoModelFactory):
   sequence = 'MVIGVGFLLVLFSSSVLGILNAGVQLRIEELFDTPGHTNNWAVLVCTSRFWFNYRHVSNVLALYHTVKRLGIPDSNIILMLAEDVPCNPRNPRPEAAVLSA'
   class Meta:
     model = Protein
+
+class ProteinDomainLinkFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ProteinDomainLink
+
+    protein = factory.SubFactory(ProteinFactory)
+    domains = factory.SubFactory(DomainsFactory)
+
+class ProteinWithDomainsListFactory(ProteinFactory):
+    protein = factory.RelatedFactory(
+        ProteinDomainLink,
+        factory_related_name='protein',
+    )
 
 class ProteinListFactory(ProteinFactory):
   #id =  factory.Iterator([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 1611, 1612, 1613, 1614, 1615, 1616, 1617, 1618])
@@ -171,3 +198,102 @@ class ProteinListFactory(ProteinFactory):
   #   abstract = False
   #   #exclude = ('id', 'protein_id',)
     
+class DomainsListFactory(factory.django.DjangoModelFactory):
+    # pfam_id = [
+    # {
+    #     "id": 1711,
+    #     "pfam_id": {
+    #         "domain_id": "mobidb-lite",
+    #         "domain_description": "disorder prediction"
+    #     }
+    # },
+    # {
+    #     "id": 2181,
+    #     "pfam_id": {
+    #         "domain_id": "PF00415",
+    #         "domain_description": "Regulatorofchromosomecondensation(RCC1)repeat"
+    #     }
+    # },
+    # {
+    #     "id": 2400,
+    #     "pfam_id": {
+    #         "domain_id": "PF14260",
+    #         "domain_description": "C4-typezinc-fingerofDNApolymerasedelta"
+    #     }
+    # },
+    # {
+    #     "id": 4406,
+    #     "pfam_id": {
+    #         "domain_id": "PF07648",
+    #         "domain_description": "Kazal-typeserineproteaseinhibitordomain"
+    #     }
+    # },
+    # {
+    #     "id": 4474,
+    #     "pfam_id": {
+    #         "domain_id": "mobidb-lite",
+    #         "domain_description": "disorder prediction"
+    #     }
+    # },
+    # {
+    #     "id": 4650,
+    #     "pfam_id": {
+    #         "domain_id": "mobidb-lite",
+    #         "domain_description": "disorder prediction"
+    #     }
+    # },
+    # {
+    #     "id": 6445,
+    #     "pfam_id": {
+    #         "domain_id": "mobidb-lite",
+    #         "domain_description": "disorder prediction"
+    #     }
+    # },
+    # {
+    #     "id": 7654,
+    #     "pfam_id": {
+    #         "domain_id": "PF00041",
+    #         "domain_description": "FibronectintypeIIIdomain"
+    #     }
+    # },
+    # {
+    #     "id": 8242,
+    #     "pfam_id": {
+    #         "domain_id": "mobidb-lite",
+    #         "domain_description": "disorder prediction"
+    #     }
+    # },
+    # {
+    #     "id": 8333,
+    #     "pfam_id": {
+    #         "domain_id": "PF00307",
+    #         "domain_description": "Calponinhomology(CH)domain"
+    #     }
+    # },
+    # {
+    #     "id": 8729,
+    #     "pfam_id": {
+    #         "domain_id": "PF16172",
+    #         "domain_description": "DOCKN-terminus"
+    #     }
+    # },
+    # {
+    #     "id": 9075,
+    #     "pfam_id": {
+    #         "domain_id": "PF02141",
+    #         "domain_description": "DENN(AEX-3)domain"
+    #     }
+    # }]
+    pfam_id = factory.SubFactory(ProteinFamilyFactory) 
+    taxonomy = factory.SubFactory(TaxonomyFactory) 
+    
+    #domains = factory.SubFactory(DomainsFactory)
+    #pfam_id = factory.SubFactory(ProteinFamilyFactory)
+    start = 1
+    stop = 2
+
+    class Meta:
+        model = Domains
+        #rename = {'pfam_id': 'domain_description'}
+
+

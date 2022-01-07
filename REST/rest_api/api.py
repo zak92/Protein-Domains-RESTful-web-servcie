@@ -1,156 +1,110 @@
 # rest api code
-
-from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
 from .models import *
 from .serializers import *
 
 # refactoring
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-
 from rest_framework import generics
 from rest_framework import mixins
-from rest_framework import viewsets
 
-from django.db.models import Avg, Count, Min, Sum
-from django.db.models import Count, F, Value
-
+# Endpoint name: protein_family_api
 class ProteinFamilyDetail(mixins.CreateModelMixin,
-                  mixins.RetrieveModelMixin,
-                  mixins.UpdateModelMixin,
-                  mixins.DestroyModelMixin,
-                  generics.GenericAPIView):
+                          mixins.RetrieveModelMixin,
+                          mixins.UpdateModelMixin,
+                          mixins.DestroyModelMixin,
+                          generics.GenericAPIView):
 
+  # select the appropriate queryset and  serializer
   queryset = ProteinFamily.objects.all()
   serializer_class = ProteinFamilySerializer
   
-
-  def post(self, request, *args, **kwargs):
-    return self.create(request, *args, **kwargs)
+  # This function displays the data to the user in the browsable API interface
   def get(self, request, *args, **kwargs):
       return self.retrieve(request, *args, **kwargs)
-  def put(self, request, *args, **kwargs):
-      return self.update(request, *args, **kwargs)
-  def delete(self, request, *args, **kwargs):
-    return self.destroy(request, *args, **kwargs)
 
+
+# Endpoint name: protein_detail_api
 class ProteinDetail(mixins.CreateModelMixin,
-                  mixins.RetrieveModelMixin,
-                  mixins.UpdateModelMixin,
-                  mixins.DestroyModelMixin,
-                  generics.GenericAPIView):
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
 
+  # field that is used to perform object lookup of individual model instances
   lookup_field = 'protein_id'
+  # select the appropriate queryset and  serializer
   queryset = Protein.objects.all()
   serializer_class = ProteinSerializer
   
-  
-  def post(self, request, *args, **kwargs):
-    return self.create(request, *args, **kwargs)
+  # This function retrieves and displays the data to the user in the browsable API interface
   def get(self, request, *args, **kwargs):
       return self.retrieve(request, *args, **kwargs)
-  def put(self, request, *args, **kwargs):
-      return self.update(request, *args, **kwargs)
-  def delete(self, request, *args, **kwargs):
-    return self.destroy(request, *args, **kwargs)
 
-class ProteinList(
-  # mixins.CreateModelMixin,
-  #                 mixins.RetrieveModelMixin,
-  #                 mixins.UpdateModelMixin,
-  #                 mixins.DestroyModelMixin,
-  #                 generics.GenericAPIView):
-                   generics.ListAPIView):
 
+# Endpoint name: protein_list_api
+class ProteinList(generics.ListAPIView):
+  # field that is used to perform object lookup of individual model instances
   lookup_field = 'taxonomy'
+  # select the appropriate queryset and  serializer
   queryset = Domains.objects.all()
   serializer_class = ProteinListSerializer 
 
+ # this function retrieves all relevant records in the database 
+ # that match the taxonomy ID in the url 
   def get_queryset(self):
-      """
-      This view should return a list of all the purchases
-      for the currently authenticated user.
-      """
+      # get the url path value
       taxonomy = self.kwargs['taxonomy']
-    
+      # filter using the taxonomy value
       return Protein.objects.filter(taxonomy__exact=taxonomy)
   
-  # def get(self, request, *args, **kwargs):
-  #     return self.retrieve(request, *args, **kwargs)
 
-#https://docs.djangoproject.com/en/dev/topics/db/queries/
-
+# Endpoint name: domains_list_api
 class DomainsList(generics.ListAPIView):
+   # field that is used to perform object lookup of individual model instances
   lookup_field = 'taxonomy'
+  # select the appropriate queryset and  serializer
   queryset = Domains.objects.all()
   serializer_class = DomainsListSerializer   
 
+  # this function retrieves all relevant records in the database 
+  # that match the taxonomy ID in the url 
   def get_queryset(self):
-      """
-      This view should return a list of all the purchases
-      for the currently authenticated user.
-      """
       taxonomy = self.kwargs['taxonomy']
       return Domains.objects.filter(taxonomy__exact=taxonomy)
 
 
-from django.db.models import Avg, Count, Min, Sum
-from rest_framework.response import Response
-
-
-class ProteinCoverage(#generics.ListAPIView):
-  mixins.CreateModelMixin,
-                  mixins.RetrieveModelMixin,
-                  mixins.UpdateModelMixin,
-                  mixins.DestroyModelMixin,
-                  generics.GenericAPIView):
+# Endpoint name: protein_coverage_api
+class ProteinCoverage(mixins.CreateModelMixin,
+                      mixins.RetrieveModelMixin,
+                      mixins.UpdateModelMixin,
+                      mixins.DestroyModelMixin,
+                      generics.GenericAPIView):
+  # field that is used to perform object lookup of individual model instances
   lookup_field = 'protein_id'
+  # select the appropriate queryset and  serializer
   queryset = Protein.objects.all()
-  
   serializer_class = ProteinCoverageSerializer  
 
-
-  # def get_queryset(self):
-     
-  #       protein = self.kwargs['protein_id']
-  #       #print(protein)
-  #       x = Protein.objects.filter(protein_id__exact=protein)
-      
-  #       return x
-
- 
+  # This function displays the data to the user in the browsable API interface
   def get(self, request, *args, **kwargs):
     return self.retrieve(request, *args, **kwargs)
 
 
-
- 
-# https://stackoverflow.com/questions/31920853/aggregate-and-other-annotated-fields-in-django-rest-framework-serializers
+# Endpoint name: add_protein_detail_api
+class AddNewProtein(mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
   
-# https://stackoverflow.com/questions/43594195/django-sum-up-counts-in-one-query
-
-class AddNewProtein(
-  mixins.CreateModelMixin,
-                  mixins.RetrieveModelMixin,
-                  mixins.UpdateModelMixin,
-                  mixins.DestroyModelMixin,
-                  generics.GenericAPIView):
-  
-  queryset = Protein.objects.all()  # Protein
-  
+  # select the appropriate queryset and  serializer
+  queryset = Protein.objects.all()  
   serializer_class = AddNewProteinSerializer  
-  # serializer_class = ProteinDomainLinkSerializer
 
-
+  # The functions below allow users to add (post) or update (put) a protein record 
+  # or delete (delete) a protein record using the browsable API interface
   def post(self, request, *args, **kwargs):
     return self.create(request, *args, **kwargs)
-
-  # def get(self, request, *args, **kwargs):
-  #   return self.retrieve(request, *args, **kwargs)
-
   def put(self, request, *args, **kwargs):
       return self.update(request, *args, **kwargs)
   def delete(self, request, *args, **kwargs):

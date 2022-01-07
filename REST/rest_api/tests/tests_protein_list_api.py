@@ -12,37 +12,6 @@ from ..serializers import *
 
 import random
 
-# proteins = ['A0A016S8J7',
-#                   'A0A016SK08',
-#                   'A0A016SLU4',
-#                   'A0A016SS41',
-#                   'A0A016T911',
-#                   'A0A016TEY5',
-#                   'A0A016TQ94',
-#                   'A0A016TTS1',
-#                   'A0A016U0V3',
-#                   'A0A016U557',
-#                   'A0A016U701',
-#                   'A0A016UJ17',
-#                   'A0A016USI4',
-#                   'A0A016V1B2',
-#                   'A0A016V7D3',
-#                   'A0A016VK28',
-#                   'A0A016W2S6',
-#                   'A0A016W9A4',
-#                   'A0A016WC87',
-#                   'A0A016WF52',
-#                   'A0A016WMQ5',
-#                   'A0A016WYY3',
-#                   'A0A016WZR8',
-#                   'A0A0D6LJF5',
-#                   'A0A0D6LM05',
-#                   'A0A0D6LTY2',
-#                   'A0A0D6LUX2',
-#                   'A0A0D6LX61',
-#                   'A0A0D6M2K0',
-#                   'A0A0D6M3G0',
-#                   'A0A0D6M6X9']
 
 
 

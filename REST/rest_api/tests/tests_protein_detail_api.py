@@ -50,7 +50,7 @@ class ProteinDetailTest(APITestCase):
 # check if all the necessary fields are there
   def test_ProteinDetailCorrectFields(self):
     response = self.client.get(self.good_url, format='json')
-    response.render()
+    response.render() 
     # check if data is correct
     data = json.loads(response.content)
     self.assertTrue('protein_id' in data)
@@ -64,6 +64,7 @@ class ProteinDetailTest(APITestCase):
     response.render()
     # check if data is correct
     data = json.loads(response.content)
+    # print(data)
     self.assertEqual(data['protein_id'], 'A0A016S8J7')
     self.assertEqual(data['sequence'], 'MVIGVGFLLVLFSSSVLGILNAGVQLRIEELFDTPGHTNNWAVLVCTSRFWFNYRHVSNVLALYHTVKRLGIPDSNIILMLAEDVPCNPRNPRPEAAVLSA')
     self.assertEqual(data['taxonomy'], { 'taxa_id': 53326,
