@@ -1,12 +1,9 @@
 from django.test import TestCase
-
 import json
-
 from django.urls import reverse
 from django.urls import reverse_lazy
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
-
 from .model_factories import *
 from ..serializers import *
 
@@ -94,7 +91,8 @@ class AddProteinDetailTest(APITestCase):
     self.assertEqual(data['taxonomy'], {'taxa_id': 50007000, 'clade': 'E', 'genus': 'Ancylostoma', 'species': 'ceylanicum'})
     self.assertEqual(data['length'], 11)
    
-# ###################  Serializers ######################################
+# ===================================  Relevant Serializer Tests ===============================================
+
 class ProteinSerializerTest(APITestCase):
 
   AddNewProteinSerializer = None
@@ -102,6 +100,7 @@ class ProteinSerializerTest(APITestCase):
   def setUp(self):
     self.AddNewProteinSerializer = AddNewProteinSerializer()
 
+  # check if fields are correct
   def test_addNewProteinSerializerCorrectFields(self):
     data = self.AddNewProteinSerializer.data
     self.assertEqual(set(data.keys()), set(['protein_id', 'sequence', 'taxonomy', 'length']))

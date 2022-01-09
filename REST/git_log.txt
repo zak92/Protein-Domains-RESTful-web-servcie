@@ -1,3 +1,12 @@
+commit 5ca621e5c2c57ef5ff856dd0238aa32424496073
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Sun Jan 9 19:12:06 2022 +0200
+
+    Created 8 new tests
+    Created the following two files containing unit tets:\
+       - tests_add_protein_detail_api.py
+       - tests_protein_coverage_api.py
+
 commit 1a61b05bdf8ff97ccfe8ad8135a22dc2b6e93b6b
 Author: Zakiyyah Ahmed <zaktech269@gmail.com>
 Date:   Fri Jan 7 23:05:49 2022 +0200

@@ -1,12 +1,9 @@
 from django.test import TestCase
-
 import json
-
 from django.urls import reverse
 from django.urls import reverse_lazy
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
-
 from .model_factories import *
 from ..serializers import *
 
@@ -21,7 +18,6 @@ class ProteinFamilyTest(APITestCase):
     self.good_url = reverse('protein_family_api', kwargs={'pk': 'PF00360'})
     self.bad_url = '/api/pfam/X'
    
-
   def tearDown(self):
     ProteinFamily.objects.all().delete()
     ProteinFamilyFactory.reset_sequence(0)
@@ -58,6 +54,7 @@ class ProteinFamilyTest(APITestCase):
     self.assertEqual(data['domain_id'], 'PF00360')
     self.assertEqual(data['domain_description'], 'Phytochromeregion')
     
+# ===================================  Relevant Serializer Tests ===============================================
 
 class ProteinFamilySerializerTest(APITestCase):
   protein_family_1 = None
@@ -71,11 +68,12 @@ class ProteinFamilySerializerTest(APITestCase):
     ProteinFamily.objects.all().delete()
     ProteinFamilyFactory.reset_sequence(0)
 
+  # check if fields are correct
   def test_proteinFamilySerializerCorrectFields(self):
     data = self.ProteinFamilySerializer.data
     self.assertEqual(set(data.keys()), set(['domain_id', 'domain_description']))
     
-
+  # check if field values are correct
   def test_ProteinFamilyFieldData(self):
     data = self.ProteinFamilySerializer.data
     self.assertEqual(data['domain_id'], 'PF00360')

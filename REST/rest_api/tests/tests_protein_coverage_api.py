@@ -1,12 +1,9 @@
 from django.test import TestCase
-
 import json
-
 from django.urls import reverse
 from django.urls import reverse_lazy
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
-
 from .model_factories import *
 from ..serializers import *
 
@@ -22,12 +19,10 @@ class ProteinCoverageTest(APITestCase):
     self.good_url = reverse('protein_coverage_api', kwargs={'protein_id': 'A0A016S8J7'})
     self.bad_url = '/api/protein/X'
    
-
   def tearDown(self):
     Protein.objects.all().delete()
     ProteinFactory.reset_sequence(0)
    
-
   # test for successful response code for Protein Detail endpoint
   def test_ProteinCoverageResponseSuccessCode(self):
     response = self.client.get(self.good_url, format='json')
@@ -35,8 +30,6 @@ class ProteinCoverageTest(APITestCase):
     response.render()
     # test if the http code is 200
     self.assertEqual(response.status_code, 200)
-
-
 
   # if user send wrong protein_id - user must get 404 code
   def test_ProteinCoverageReturnFailOnBadProteinId(self):
@@ -51,17 +44,9 @@ class ProteinCoverageTest(APITestCase):
     data = json.loads(response.content)
     self.assertTrue('coverage' in data)
   
-   
-# #check if all the the fields contain correct values
-#   def test_ProteinDetailFieldData(self):
-#     response = self.client.get(self.good_url, format='json')
-#     response.render()
-#     # check if data is correct
-#     data = json.loads(response.content)
-#     # print(data)
-#     self.assertEqual(data['coverage'], 0)
 
-########################################Serilaizser
+# ===================================  Relevant Serializer Tests ===============================================
+
 class ProteinCoverageSerializerTest(APITestCase):
   protein1 = None
   ProteinCoverageSerializer = None
@@ -74,6 +59,7 @@ class ProteinCoverageSerializerTest(APITestCase):
     Protein.objects.all().delete()
     ProteinFactory.reset_sequence(0)
 
+  # check if fields are correct
   def test_proteinCoverageSerializerCorrectFields(self):
     data = self.ProteinCoverageSerializer.data
     self.assertEqual(set(data.keys()), set(['coverage']))

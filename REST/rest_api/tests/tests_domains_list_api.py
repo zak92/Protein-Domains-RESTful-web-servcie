@@ -18,10 +18,9 @@ class DomainListTest(APITestCase):
   bad_url = ''
   
   def setUp(self):
-    
-    self.domain_list_1 = DomainsFactory()
     self.good_url = reverse('domains_list_api', kwargs={'taxonomy': 55661})
     self.bad_url = '/api/pfams/X'
+    self.domain_list_1 = DomainsFactory()
    
 
   def tearDown(self):
@@ -47,30 +46,7 @@ class DomainListTest(APITestCase):
     response = self.client.get(self.bad_url)
     self.assertEqual(response.status_code, 404)
 
-# # check if a list is returned
-#   def test_ProteinFamilyCorrectFields(self):
-#     response = self.client.get(self.good_url, format='json')
-#     response.render()
-#     # check if data is correct
-#     data = json.loads(response.content)
-#     self.assertIsInstance(data, list)
-#     self.assertIsInstance(data[0], dict)
-    
-# #check if all the the first element in the list contain correct values
-
-  # def test_DomainsListFieldData(self):
-    
-  #     response = self.client.get(self.good_url, format='json')
-  #     response.render()
-     
-  #     data = json.loads(response.content)
-     
-  #     print(data)
-     
-      #self.assertEqual(data[0]['protein_id'][1:38], "{'id': 2, 'protein_id': 'A0A016S8J7'}")
-     
-    
-    # serializers
+# ===================================  Relevant Serializer Tests ===============================================
 
 class DomainListSerializerTest(APITestCase):
   domain_list_1 = None
@@ -88,6 +64,7 @@ class DomainListSerializerTest(APITestCase):
     ProteinFamily.objects.all().delete() 
     ProteinFamilyFactory.reset_sequence(0)
 
+  # check if fields are correct
   def test_DomainsListSerializerCorrectFields(self):
     data = self.DomainsListSerializer.data
     self.assertEqual(set(data.keys()), set(['pfam_id']))
