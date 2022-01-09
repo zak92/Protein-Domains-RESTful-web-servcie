@@ -55,11 +55,11 @@ class ProteinDomainLinkFactory(factory.django.DjangoModelFactory):
     protein = factory.SubFactory(ProteinFactory)
     domains = factory.SubFactory(DomainsFactory)
 
-class ProteinWithDomainsListFactory(ProteinFactory):
-    protein = factory.RelatedFactory(
-        ProteinDomainLink,
-        factory_related_name='protein',
-    )
+# class ProteinWithDomainsListFactory(ProteinFactory):
+#     protein = factory.RelatedFactory(
+#         ProteinDomainLink,
+#         factory_related_name='protein',
+#     )
 
 class ProteinListFactory(ProteinFactory):
   #id =  factory.Iterator([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 1611, 1612, 1613, 1614, 1615, 1616, 1617, 1618])
@@ -297,3 +297,4 @@ class DomainsListFactory(factory.django.DjangoModelFactory):
         #rename = {'pfam_id': 'domain_description'}
 
 
+        

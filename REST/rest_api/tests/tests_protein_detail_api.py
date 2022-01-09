@@ -106,6 +106,6 @@ class ProteinSerializerTest(APITestCase):
 
 
 
-    # post method = https://www.youtube.com/watch?v=0EmvB9fvmsA
+
 
     # lists - https://medium.com/@stevelukis/using-listapiview-unit-test-in-django-rest-framework-5af231ce246

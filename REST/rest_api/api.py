@@ -99,10 +99,13 @@ class AddNewProtein(mixins.CreateModelMixin,
   
   # select the appropriate queryset and  serializer
   queryset = Protein.objects.all()  
+  lookup_field = 'protein_id'
   serializer_class = AddNewProteinSerializer  
 
   # The functions below allow users to add (post) or update (put) a protein record 
   # or delete (delete) a protein record using the browsable API interface
+  # def get(self, request, *args, **kwargs):
+  #   return self.retrieve(request, *args, **kwargs)
   def post(self, request, *args, **kwargs):
     return self.create(request, *args, **kwargs)
   def put(self, request, *args, **kwargs):

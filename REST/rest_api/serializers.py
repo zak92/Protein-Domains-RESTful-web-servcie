@@ -88,13 +88,18 @@ class ProteinCoverageSerializer(serializers.ModelSerializer):
     id_domains = getattr(obj, 'id')   
    
     # get length of the protein that matches the protein_id in the url
-    coverage_x = Protein.objects.filter(protein_id__exact=id_protein).aggregate(coverage=Sum('length'))
+    coverage_x = Protein.objects.filter(protein_id__exact=id_protein).values('length')
     # get values of the 'start' coordinate of the protein that matches the protein_id in the url & add the values
-    coverage_y = Domains.objects.filter(protein__exact=id_domains).aggregate(coverage=Sum('start'))
+    # coverage_y = Domains.objects.filter(protein__exact=id_domains).aggregate(start=Sum('start'))
+    coverage_y = Domains.objects.filter(protein__exact=id_domains).aggregate(Sum('start'))
     # get values of the 'stop' coordinate of the protein that matches the protein_id in the url & add the values
-    coverage_z = Domains.objects.filter(protein__exact=id_domains).aggregate(coverage=Sum('stop'))
+    coverage_z = Domains.objects.filter(protein__exact=id_domains).aggregate(Sum('stop'))
     # calculate the coverage with the provided equation : abs(sum(start)-sum(stop)) / length of protein
-    result = abs(coverage_y['coverage'] - coverage_z['coverage']) / coverage_x['coverage']
+    try:
+      result = (coverage_y['start__sum'] - coverage_z['stop__sum']) / coverage_x[0]['length']
+      result = abs(result)
+    except:
+      result = None
     return result
     
   class Meta:
@@ -116,12 +121,12 @@ class ProteinCoverageSerializer(serializers.ModelSerializer):
 class AddNewProteinSerializer(WritableNestedModelSerializer, 
                               serializers.ModelSerializer): 
   taxonomy = TaxonomySerializer()
-  domains =  ProteinDomainsListSerializer(many=True)
+  #domains =  ProteinDomainsListSerializer()
 
   class Meta:
     model = Protein
     # fields that the user can add data to create a new protein record
-    fields = ['protein_id', 'sequence', 'taxonomy', 'length', 'domains']
+    fields = ['protein_id', 'sequence', 'taxonomy', 'length']
 
 
   

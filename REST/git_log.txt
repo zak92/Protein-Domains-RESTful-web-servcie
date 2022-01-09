@@ -1,0 +1,144 @@
+commit 1a61b05bdf8ff97ccfe8ad8135a22dc2b6e93b6b
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Fri Jan 7 23:05:49 2022 +0200
+
+    Refactoring, cleaning and adding comments to the code
+
+commit 5c75041fd0fd4d5b60cd69ba0e190c88abd31577
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Wed Jan 5 00:51:47 2022 +0200
+
+    Create tests in tests_protein_list_api.py for the following endpoint:
+          name: protein_list_api
+          url: http://127.0.0.1:8000/api/proteins/55661
+
+commit 55878a8c8df0c989e69388cd6cefd4d1a40b81bc
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Tue Jan 4 14:01:35 2022 +0200
+
+    Create tests in tests_protein_family_api.py for the following endpoint:
+      name: protein_family_api
+      url: http://127.0.0.1:8000/api/pfam/[PFAM ID]
+
+commit ceaf6072b2c032bb95066c855d8d4341affbcb75
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Mon Jan 3 23:14:08 2022 +0200
+
+    Created a 'tests' folder that should contain all tests for this application
+    
+    Created tests_protein_detail_api.py that contains all the relevant tests for
+    the following endpoint:
+    name: protein_detail_api
+    url: http://127.0.0.1:8000/api/protein/[PROTEIN ID]
+
+commit 68aa76b12c6bf4eb5597e6ceab00461b86d1ec29
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Mon Jan 3 13:29:43 2022 +0200
+
+    Created the ProteinCoverageSerializer in serializers.py
+    Created the ProteinCoverage class in api.py
+    Created the following endpoint:
+      http://127.0.0.1:8000/api/coverage/[PROTEIN ID]
+
+commit 0d57bdea48bbe6bc1729831c5a9695a57bf3e0f1
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Sun Jan 2 15:16:08 2022 +0200
+
+    Fixed ProteinSerializer class in serializer.py
+    Modified the Domains model and Protein model in models.py
+    Successfully created the following endpoint:
+    http://127.0.0.1:8000/api/protein/[PROTEIN ID]
+    Endpoint now includes the domains field as shown in the rest specifications file provided
+
+commit 7259ba1582fa605495124b3f8abcfefe6a5ffa32
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Thu Dec 30 21:08:23 2021 +0200
+
+    Merged the following two files:
+    assignment_data_sequences.csv
+    assignment_data_set.csv
+    And Created a new file:   data/merge_file_2_and_3.csv
+    
+    Updated populate_db.py to include 'sequence' in the 'protein'
+    data structure
+    Updated models.py by adding a sequence field in the Protein model
+
+commit 21d32d9806594116e54c64489302621ec915e956
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Thu Dec 30 16:19:37 2021 +0200
+
+    Modified the following models in models.py:
+    Domains
+    proteins
+    
+    Created the following endpoints:
+    http://127.0.0.1:8000/api/proteins/[TAXA ID]
+    http://127.0.0.1:8000/api/pfams/[TAXA ID]
+    http://127.0.0.1:8000/api/protein/A0A016S8J7
+
+commit 766c4f90f2f0a580001ebff8d90e7ffeff86f42d
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Thu Dec 30 14:44:37 2021 +0200
+
+    Created the following models in models.py:
+    Taxonomy
+    Protein
+    Domains
+    
+    Created the following serializers in serializers.py:
+    ProteinListSerializer
+    ProteinSerializer
+    TaxonomySerializer
+    DomainsListSerializer
+    
+    Created the following classes in api.py
+    ProteinList
+    DomainList
+
+commit bb8f61070fd84434549b06b94b529317bb7d9406
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Thu Dec 23 18:00:42 2021 +0200
+
+    Created an admin interface
+    Created the protein family model in models.py
+    Registered the protein family model in admin.py
+    Used serializers and created the following endpoint: GET  http://127.0.0.1:8000/api/pfam/[PFAM ID]
+
+commit 6c06ac804b3ccd602fcd36cebafd48bf626829d4
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Wed Dec 22 14:39:32 2021 +0200
+
+    Installed and configured django rest framework
+    Created serializers.py
+    Created api.py
+
+commit 1dd5d9b3be754c3bf2456f04c9155906c56ae196
+Merge: 9935df9c 69615250
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Tue Dec 21 15:04:48 2021 +0200
+
+    Merge branch 'main'
+
+commit 9935df9cc5041b60f4c0bc3e176e3192be9e19da
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Tue Dec 21 14:42:00 2021 +0200
+
+    Initialize Django project
+
+commit 845cdfded4044bae76ccb1ca434bd14509cd13f2
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Tue Dec 21 14:09:27 2021 +0200
+
+    Created a requirements.txt
+
+commit 9cb14f5cbb39e1d448cb6e7daf981d31543a546d
+Author: Zakiyyah Ahmed <zaktech269@gmail.com>
+Date:   Tue Dec 21 14:02:48 2021 +0200
+
+    Created a virtual environment
+
+commit 696152503829e419205fe747c71fe736f18a73c9
+Author: Zakiyyah Ahmed <48877866+zak92@users.noreply.github.com>
+Date:   Tue Dec 21 13:53:50 2021 +0200
+
+    Create readme file
